@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSVP Admin Console</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .logout {
+      display: block;
+      margin: 15px auto;
+      padding: 8px 16px;
+      background: #d9534f;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wedding RSVP Admin Console</h1>
+  <button class="logout" id="logoutBtn">Logout</button>
+
+  <table id="rsvpTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Side</th>
+        <th>Members</th>
+        <th>Reception</th>
+        <th>Marriage</th>
+        <th>Wishes</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBcI1Xf7ky1MrwxHjqhbGigDDclrxCE7o8",
+      authDomain: "rsvp-cee78.firebaseapp.com",
+      databaseURL: "https://rsvp-cee78-default-rtdb.firebaseio.com",
+      projectId: "rsvp-cee78",
+      storageBucket: "rsvp-cee78.appspot.com",
+      messagingSenderId: "396307359655",
+      appId: "1:396307359655:web:0537fe427eb53dda463882"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    const tableBody = document.querySelector('#rsvpTable tbody');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Auth check
+    onAuthStateChanged(auth, user => {
+      if (!user || user.email.toLowerCase() !== "yokeshyokee1@gmail.com") {
+        window.location = "index.html";
+      } else {
+        loadRSVPData();
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        window.location = "index.html";
+      });
+    });
+
+    function loadRSVPData() {
+      onValue(ref(db, 'weddingRSVP'), (snapshot) => {
+        tableBody.innerHTML = '';
+        snapshot.forEach(childSnap => {
+          const data = childSnap.val();
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${data.name || ''}</td>
+            <td>${data.side || ''}</td>
+            <td>${data.members || ''}</td>
+            <td>${data.reception || ''}</td>
+            <td>${data.marriage || ''}</td>
+            <td>${data.wishes || ''}</td>
+            <td>${data.timestamp ? new Date(data.timestamp).toLocaleString() : ''}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

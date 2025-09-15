@@ -1,0 +1,64 @@
+
+/* Style the form container */
+.form-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px; /* form width */
+  
+}
+
+/* Make headings and labels look nice */
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Make input fields full width */
+.form-container input[type="text"],
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+.button-33 button {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+
+  /* ✅ Only a small subtle shadow now */
+  box-shadow: 
+    rgba(44, 187, 99, .15) 0 2px 4px,
+    rgba(44, 187, 99, .15) 0 4px 8px;
+
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-33 button:hover {
+  /* Slightly stronger shadow on hover */
+  box-shadow:
+    rgba(44,187,99,.25) 0 2px 4px,
+    rgba(44,187,99,.25) 0 4px 8px;
+  transform: scale(1.05) rotate(-1deg);
+}

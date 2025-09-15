@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background: #007bff;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    p {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Email" />
+    <input type="password" id="adminPass" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+    <p id="adminMessage"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Firebase config (replace if needed)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBcI1Xf7ky1MrwxHjqhbGigDDclrxCE7o8",
+      authDomain: "rsvp-cee78.firebaseapp.com",
+      databaseURL: "https://rsvp-cee78-default-rtdb.firebaseio.com",
+      projectId: "rsvp-cee78",
+      storageBucket: "rsvp-cee78.appspot.com",
+      messagingSenderId: "396307359655",
+      appId: "1:396307359655:web:0537fe427eb53dda463882"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const loginBtn = document.getElementById('loginBtn');
+    const adminMessage = document.getElementById('adminMessage');
+
+    loginBtn.addEventListener('click', () => {
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPass').value.trim();
+      if(!email || !password) {
+        adminMessage.textContent = "Enter email and password.";
+        return;
+      }
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          const user = userCredential.user;
+          if(user.email.toLowerCase() === "yokeshyokee1@gmail.com") {
+            window.location.href = "admin.html";
+          } else {
+            adminMessage.textContent = "You are not authorized as admin.";
+            signOut(auth);
+          }
+        })
+        .catch(err => {
+          adminMessage.textContent = "Login failed: " + err.message;
+        });
+    });
+
+    // Auto redirect if already logged in
+    onAuthStateChanged(auth, user => {
+      if(user && user.email.toLowerCase() === "yokeshyokee1@gmail.com") {
+        window.location.href = "admin.html";
+      }
+    });
+  </script>
+</body>
+</html>
