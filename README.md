@@ -17,11 +17,23 @@ A responsive wedding invitation website with an RSVP form and an admin dashboard
 
 
 📸 Screenshots
-Invitation Page	                         RSVP Form
-![alt text](Screenshort/Capture1.PNG)	![alt text](Screenshort/Capture2.PNG)
 
-Admin Login	                             Admin Console
-![alt text](Screenshort/Capture3.PNG)	![alt text](Screenshort/Capture4.PNG)
+Invitation Page	      
+
+![alt text](Screenshort/Capture1.PNG)	
+
+
+ RSVP Form
+
+![alt text](Screenshort/Capture2.PNG)
+
+
+Admin Login
+![alt text](Screenshort/Capture3.PNG)
+
+Admin Console
+
+![alt text](Screenshort/Capture4.PNG)
 
 
 wedding-rsvp/
