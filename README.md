@@ -25,12 +25,20 @@ Admin Login	                             Admin Console
 
 
 wedding-rsvp/
+
 ├── index.html        # Wedding invitation page
+
 ├── rsvp.html         # Guest RSVP form
+
 ├── login.html        # Admin login page
+
 ├── admin.html        # Admin dashboard
+
 ├── /assets           # Images, CSS, JS
+
 └── README.md
+
+
 
 🛠️ Tech Stack
 
@@ -42,11 +50,16 @@ Auth: Firebase Authentication (Email/Password)
 
 Hosting: Netlify
 
+
+
 🚀 Getting Started
 1️⃣ Clone the Repository
 
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/Yokesh1234/Wedding-page.git
+
+cd Wedding-page
+
+
 
 2️⃣ Set Up Firebase
 
@@ -64,6 +77,8 @@ login.html
 
 admin.html
 
+
+
 3️⃣ Configure Admin Email
 
 In login.html and admin.html you’ll see:
@@ -74,6 +89,8 @@ if (user.email.toLowerCase() === "youremail@gmail.com") {
 
 Replace with your admin email.
 
+
+
 4️⃣ Run Locally
 
 Use VS Code Live Server or similar:
@@ -81,6 +98,8 @@ Use VS Code Live Server or similar:
 npx live-server
 
 Then open http://127.0.0.1:5500/index.html.
+
+
 
 5️⃣ Deploy to Netlify
 
@@ -102,6 +121,9 @@ Click Deploy.
 
 Netlify will give you a public URL like https://yourproject.netlify.app.
 
+
+
+
 🔑 Admin Login
 
 Create an admin user in Firebase Authentication (email/password).
@@ -109,6 +131,9 @@ Create an admin user in Firebase Authentication (email/password).
 Only this email can access admin.html.
 
 Other users trying to log in will be denied.
+
+
+
 
 🔒 Security Tips
 
@@ -127,10 +152,14 @@ Example rules:
 }
 
 
+
+
 🙏 Acknowledgements
 
 Firebase for Authentication & Database
 Netlify for hosting
+
+
 
 ✅ How to use:
 
