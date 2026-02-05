@@ -4,57 +4,141 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RSVP Admin Console</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f8f8f8;
+      margin: 0;
+      min-height: 100vh;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    /* Background blur layer */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background-image: url("/assets/images/couple/marriage.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      filter: blur(7px);       /* 👈 blur */
+      transform: scale(1.05);  /* blur edge white avoid */
+      z-index: -2;
+    }
+
+    /* Dark overlay (readability) */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: -1;
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+      body::before {
+        background-position: center top;
+      }
+    }
+
     h1 {
       text-align: center;
+      color: white;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+      font-size: 24px;
+      margin-top: 10px;
     }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
     .logout {
       display: block;
       margin: 15px auto;
-      padding: 8px 16px;
+      padding: 10px 18px;
       background: #d9534f;
       color: #fff;
       border: none;
       cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
     }
+
+    .logout:hover {
+      opacity: 0.9;
+    }
+
+    /* Table wrapper for mobile scroll */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
     table {
       width: 100%;
+      min-width: 900px; /* Mobile la horizontal scroll varum */
       border-collapse: collapse;
-      background: white;
+      background: rgba(255,255,255,0.93);
     }
+
     th, td {
       border: 1px solid #ccc;
-      padding: 8px;
+      padding: 10px;
       text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
     }
+
     th {
       background: #eee;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      th, td {
+        font-size: 13px;
+        padding: 8px;
+      }
     }
   </style>
 </head>
+
 <body>
   <h1>Wedding RSVP Admin Console</h1>
   <button class="logout" id="logoutBtn">Logout</button>
 
-  <table id="rsvpTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Side</th>
-        <th>Members</th>
-        <th>Reception</th>
-        <th>Marriage</th>
-        <th>Wishes</th>
-        <th>Timestamp</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="table-wrap">
+    <table id="rsvpTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Side</th>
+          <th>Members</th>
+          <th>Reception</th>
+          <th>Marriage</th>
+          <th>Wishes</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -75,11 +159,11 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
 
-    const tableBody = document.querySelector('#rsvpTable tbody');
-    const logoutBtn = document.getElementById('logoutBtn');
+    const tableBody = document.querySelector("#rsvpTable tbody");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     // Auth check
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, (user) => {
       if (!user || user.email.toLowerCase() !== "yokeshyokee1@gmail.com") {
         window.location = "index.html";
       } else {
@@ -87,27 +171,31 @@
       }
     });
 
-    logoutBtn.addEventListener('click', () => {
+    // Logout
+    logoutBtn.addEventListener("click", () => {
       signOut(auth).then(() => {
         window.location = "index.html";
       });
     });
 
     function loadRSVPData() {
-      onValue(ref(db, 'weddingRSVP'), (snapshot) => {
-        tableBody.innerHTML = '';
-        snapshot.forEach(childSnap => {
+      onValue(ref(db, "weddingRSVP"), (snapshot) => {
+        tableBody.innerHTML = "";
+
+        snapshot.forEach((childSnap) => {
           const data = childSnap.val();
-          const row = document.createElement('tr');
+
+          const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${data.name || ''}</td>
-            <td>${data.side || ''}</td>
-            <td>${data.members || ''}</td>
-            <td>${data.reception || ''}</td>
-            <td>${data.marriage || ''}</td>
-            <td>${data.wishes || ''}</td>
-            <td>${data.timestamp ? new Date(data.timestamp).toLocaleString() : ''}</td>
+            <td>${data.name || ""}</td>
+            <td>${data.side || ""}</td>
+            <td>${data.members || ""}</td>
+            <td>${data.reception || ""}</td>
+            <td>${data.marriage || ""}</td>
+            <td>${data.wishes || ""}</td>
+            <td>${data.timestamp ? new Date(data.timestamp).toLocaleString() : ""}</td>
           `;
+
           tableBody.appendChild(row);
         });
       });
